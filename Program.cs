@@ -32,6 +32,12 @@ namespace ps_semantic_kernel
                 x.DeploymentName = config["AzureOpenAIConfig:DeploymentName"];
             });
 
+            services.Configure<MistralAIConfig>((options) =>
+            {
+                options.ApiKey = config["MistralAIConfig:ApiKey"];
+                options.ModelId = config["MistralAIConfig:ModelId"];
+            });
+
 
             var serviceProvider = services.BuildServiceProvider();
 

@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Connectors.MistralAI;
 using ps_semantic_kernel.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+#pragma warning disable SKEXP0070  
 namespace ps_semantic_kernel;
 
 public interface IBasicsOfSK
@@ -18,13 +19,16 @@ public class BasicsOfSK : IBasicsOfSK
 {
     private readonly OpenAIConfig _config;
     private readonly AzureOpenAIConfig _azureOpenAIConfig;
+    private readonly MistralAIConfig _mistralAIConfig;
     public BasicsOfSK(
         IOptions<OpenAIConfig> _options,
-        IOptions<AzureOpenAIConfig> azureOpenAIConfigOptions
+        IOptions<AzureOpenAIConfig> azureOpenAIConfigOptions,
+        IOptions<MistralAIConfig> mistralAIConfigOptions
         )
     {
         this._config = _options.Value;
         _azureOpenAIConfig = azureOpenAIConfigOptions.Value;
+        _mistralAIConfig = mistralAIConfigOptions.Value;
     }
 
     public async Task SimplePromptLoop()
@@ -36,6 +40,11 @@ public class BasicsOfSK : IBasicsOfSK
             _azureOpenAIConfig.DeploymentName,
             _azureOpenAIConfig.Endpoint,
             _azureOpenAIConfig.ApiKey
+        )
+        .AddMistralChatCompletion
+        (
+            _mistralAIConfig.ModelId,
+            _mistralAIConfig.ApiKey
         )
         .Build();
 
