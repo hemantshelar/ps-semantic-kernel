@@ -14,6 +14,8 @@ namespace ps_semantic_kernel
 
             ServiceCollection services = new();
 
+            services.AddSingleton<IBasicsOfSK, BasicsOfSK>();
+
             services.AddSingleton<Application>();
             services.AddSingleton(config);
 
@@ -23,11 +25,20 @@ namespace ps_semantic_kernel
                 x.Model = config["OpenAIConfig:Model"];
             });
 
+            services.Configure<AzureOpenAIConfig>((x) =>
+            {
+                x.ApiKey = config["AzureOpenAIConfig:ApiKey"];
+                x.Endpoint = config["AzureOpenAIConfig:Endpoint"];
+                x.DeploymentName = config["AzureOpenAIConfig:DeploymentName"];
+            });
+
 
             var serviceProvider = services.BuildServiceProvider();
 
             var app = serviceProvider.GetRequiredService<Application>();
-            app.Run();
+            var basicsOfSK = serviceProvider.GetRequiredService<IBasicsOfSK>();
+            //app.Run();
+            basicsOfSK.SimplePromptLoop().GetAwaiter().GetResult();
 
 
 
