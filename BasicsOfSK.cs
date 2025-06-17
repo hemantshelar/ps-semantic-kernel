@@ -20,32 +20,40 @@ public class BasicsOfSK : IBasicsOfSK
     private readonly OpenAIConfig _config;
     private readonly AzureOpenAIConfig _azureOpenAIConfig;
     private readonly MistralAIConfig _mistralAIConfig;
+    private readonly GoogleAIConfig _googleAIConfig;
     public BasicsOfSK(
         IOptions<OpenAIConfig> _options,
         IOptions<AzureOpenAIConfig> azureOpenAIConfigOptions,
-        IOptions<MistralAIConfig> mistralAIConfigOptions
+        IOptions<MistralAIConfig> mistralAIConfigOptions,
+        IOptions<GoogleAIConfig> googleAIConfigOptions
         )
     {
         this._config = _options.Value;
         _azureOpenAIConfig = azureOpenAIConfigOptions.Value;
         _mistralAIConfig = mistralAIConfigOptions.Value;
+        _googleAIConfig = googleAIConfigOptions.Value;
     }
 
     public async Task SimplePromptLoop()
     {
         Kernel kernel = Kernel.CreateBuilder()
-        .AddOpenAIChatCompletion(_config.Model, _config.ApiKey)
-        .AddAzureOpenAIChatCompletion
+        /*.AddOpenAIChatCompletion(_config.Model, _config.ApiKey)*/
+        /*.AddAzureOpenAIChatCompletion
         (
             _azureOpenAIConfig.DeploymentName,
             _azureOpenAIConfig.Endpoint,
             _azureOpenAIConfig.ApiKey
-        )
-        .AddMistralChatCompletion
+        )*/
+        /*.AddMistralChatCompletion
         (
             _mistralAIConfig.ModelId,
             _mistralAIConfig.ApiKey
-        )
+        )*/
+        /*.AddGoogleAIGeminiChatCompletion
+        (
+            _googleAIConfig.ModelId,
+            _googleAIConfig.ApiKey
+        )*/
         .Build();
 
         string input = string.Empty;

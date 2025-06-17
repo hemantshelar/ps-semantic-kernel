@@ -15,6 +15,11 @@ public class OpenAIConfig
 
 public class MistralAIConfig
 {
-    public string ApiKey { get; set; }
     public string ModelId { get; set; }
+    public string ApiKey { get; set; }
+}
+public class GoogleAIConfig
+{
+    public string ModelId { get; set; }
+    public string ApiKey { get; set; }
 }
