@@ -25,6 +25,13 @@ namespace ps_semantic_kernel
                 x.Model = config["OpenAIConfig:Model"];
             });
 
+            services.Configure<AzureOpenAIConfig>((x) =>
+            {
+                x.ApiKey = config["AzureOpenAIConfig:ApiKey"];
+                x.Endpoint = config["AzureOpenAIConfig:Endpoint"];
+                x.DeploymentName = config["AzureOpenAIConfig:DeploymentName"];
+            });
+
 
             var serviceProvider = services.BuildServiceProvider();
 

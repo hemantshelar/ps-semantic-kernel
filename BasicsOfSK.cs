@@ -17,18 +17,26 @@ public interface IBasicsOfSK
 public class BasicsOfSK : IBasicsOfSK
 {
     private readonly OpenAIConfig _config;
-    public BasicsOfSK(IOptions<OpenAIConfig> _options)
+    private readonly AzureOpenAIConfig _azureOpenAIConfig;
+    public BasicsOfSK(
+        IOptions<OpenAIConfig> _options,
+        IOptions<AzureOpenAIConfig> azureOpenAIConfigOptions
+        )
     {
         this._config = _options.Value;
+        _azureOpenAIConfig = azureOpenAIConfigOptions.Value;
     }
 
     public async Task SimplePromptLoop()
     {
-        // gpt-4.1
-        // gpt-4.1-nano" 
-
         Kernel kernel = Kernel.CreateBuilder()
         .AddOpenAIChatCompletion(_config.Model, _config.ApiKey)
+        .AddAzureOpenAIChatCompletion
+        (
+            _azureOpenAIConfig.DeploymentName,
+            _azureOpenAIConfig.Endpoint,
+            _azureOpenAIConfig.ApiKey
+        )
         .Build();
 
         string input = string.Empty;
