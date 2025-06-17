@@ -14,6 +14,8 @@ namespace ps_semantic_kernel
 
             ServiceCollection services = new();
 
+            services.AddSingleton<IBasicsOfSK, BasicsOfSK>();
+
             services.AddSingleton<Application>();
             services.AddSingleton(config);
 
@@ -27,7 +29,9 @@ namespace ps_semantic_kernel
             var serviceProvider = services.BuildServiceProvider();
 
             var app = serviceProvider.GetRequiredService<Application>();
-            app.Run();
+            var basicsOfSK = serviceProvider.GetRequiredService<IBasicsOfSK>();
+            //app.Run();
+            basicsOfSK.SimplePromptLoop().GetAwaiter().GetResult();
 
 
 
